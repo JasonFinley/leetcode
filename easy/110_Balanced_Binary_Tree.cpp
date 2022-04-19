@@ -28,35 +28,40 @@ struct TreeNode {
 
 class Solution {
 public:
-    TreeNode* createTree( vector<int>& nums, int l, int r )
+    int getDepth( TreeNode* p )
     {
-        TreeNode* node;
-        int mid;
-
-        if( l > r )
-            return nullptr;
-
-        mid = l + (r - l)/2;
-        node = new TreeNode( nums[mid] );
-        node->left = createTree( nums, l, mid - 1 );
-        node->right = createTree( nums, mid + 1, r );
-        return node;
+        int l, r;
+        if( p == NULL ) return 0;
+        l = getDepth( p->left );
+        if( l == -1 )
+            return -1;
+        r = getDepth( p->right );
+        if( r == -1 )
+            return -1;
+        if( abs(l - r) > 1 )
+            return -1;
+        return max( l, r ) + 1;
     }
-
-    TreeNode* sortedArrayToBST(vector<int>& nums) {
-        return createTree( nums, 0, nums.size() - 1 );
+    
+    bool isBalanced(TreeNode* root) {
+        return (getDepth( root ) != -1);
     }
 };
-
 int main()
 {
-    int i;
     Solution ss;
-    vector<int> returnRec = {-10,-3,0,5,9};
-    TreeNode* root;
-    TreeNode* p;
+    TreeNode root;
+    TreeNode node1[2];
+    TreeNode node2[2];
 
-    root = ss.sortedArrayToBST( returnRec );
+    root = TreeNode( 3, &node1[0], &node1[1] );
+    node1[0] = TreeNode( 9 );
+    node1[1] = TreeNode( 20, &node2[0], &node2[1] );
+
+    node2[0] = TreeNode( 15 );
+    node2[1] = TreeNode( 7 );
+
+    cout << "isBalanced ? " << ss.isBalanced( &root ) << endl;
     
     return 0;
 }

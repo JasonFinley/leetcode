@@ -28,23 +28,17 @@ struct TreeNode {
 
 class Solution {
 public:
-    TreeNode* createTree( vector<int>& nums, int l, int r )
-    {
-        TreeNode* node;
-        int mid;
-
-        if( l > r )
-            return nullptr;
-
-        mid = l + (r - l)/2;
-        node = new TreeNode( nums[mid] );
-        node->left = createTree( nums, l, mid - 1 );
-        node->right = createTree( nums, mid + 1, r );
-        return node;
+    void _preorderTraversal(TreeNode* root, vector<int>& ret ){
+        if( root == NULL )
+            return;
+        ret.push_back( root->val );
+        _preorderTraversal( root->left, ret );
+        _preorderTraversal( root->right, ret );        
     }
-
-    TreeNode* sortedArrayToBST(vector<int>& nums) {
-        return createTree( nums, 0, nums.size() - 1 );
+    vector<int> preorderTraversal(TreeNode* root) {
+        vector<int> ans;
+        _preorderTraversal( root, ans );
+        return ans;
     }
 };
 
@@ -52,11 +46,11 @@ int main()
 {
     int i;
     Solution ss;
-    vector<int> returnRec = {-10,-3,0,5,9};
-    TreeNode* root;
-    TreeNode* p;
+    vector<int> returnRec;
+    TreeNode root;
 
-    root = ss.sortedArrayToBST( returnRec );
+    returnRec = ss.preorderTraversal( &root );
+//    cout << "isSameTree ? " << ss.preorderTraversal(  ) << endl;
     
     return 0;
 }

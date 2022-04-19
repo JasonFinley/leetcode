@@ -28,35 +28,41 @@ struct TreeNode {
 
 class Solution {
 public:
-    TreeNode* createTree( vector<int>& nums, int l, int r )
-    {
-        TreeNode* node;
-        int mid;
-
-        if( l > r )
-            return nullptr;
-
-        mid = l + (r - l)/2;
-        node = new TreeNode( nums[mid] );
-        node->left = createTree( nums, l, mid - 1 );
-        node->right = createTree( nums, mid + 1, r );
-        return node;
+    bool hasPathSum(TreeNode* root, int targetSum) {
+        int sum;
+        if( root == NULL ) return false;
+        
+        sum = targetSum - root->val;
+        if( sum == 0 && root->left == NULL && root->right == NULL )
+            return true;
+        
+        return hasPathSum( root->left, sum ) || hasPathSum( root->right, sum );
     }
-
-    TreeNode* sortedArrayToBST(vector<int>& nums) {
-        return createTree( nums, 0, nums.size() - 1 );
-    }
+    
 };
 
 int main()
 {
+/*
+[5,4,8,11,null,13,4,7,2,null,null,null,1]
+22
+*/
     int i;
     Solution ss;
-    vector<int> returnRec = {-10,-3,0,5,9};
-    TreeNode* root;
-    TreeNode* p;
+    vector<int> returnRec;
+    TreeNode root;
+    TreeNode node1;
+    TreeNode node2[3];
 
-    root = ss.sortedArrayToBST( returnRec );
+    root = TreeNode( 3, &node1, &node2[0] );
+
+    node1 = TreeNode( 9 );
+
+    node2[0] = TreeNode( 20, &node2[1], &node2[2] );
+    node2[1] = TreeNode( 20 );
+    node2[2] = TreeNode( 7 );
+
+    cout << "maxDepth ? " << ss.hasPathSum( &root, 22 ) << endl;
     
     return 0;
 }
